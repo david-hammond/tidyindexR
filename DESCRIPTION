@@ -11,8 +11,8 @@ Depends:
   R (>= 2.10)
 Imports:
   dplyr (>= 0.7.8),
-  tidyr (>= 1.0.2),
-  rlang (>= 0.4.5),
+  tidyr (>= 1.0.0),
+  rlang (>= 0.4.2),
   stats (>= 3.4.4),
   imputeTS (>= 3.0),
   padr (>= 0.5.0),

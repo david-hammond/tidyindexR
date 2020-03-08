@@ -21,16 +21,17 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
   if(sum(is.na(index_meta_data))+sum(grepl("User", index_meta_data))>0){
     message(paste("Malformed index_meta_data file at", index_meta_data_path))
     message("Please ensure all columns and cells are filled in")
-    break()
+  }else{
+    tmp = index_data_pad(df)
+    #put in a regional average option
+    tmp = rbind(tmp, index_data_knn(tmp))
+    index_meta_data <- readxl::read_excel(index_meta_data_path)
+    tmp = tmp %>% dplyr::left_join(index_meta_data)
+    tmp$imputed[!as.logical(tmp$is_more_better)] = -tmp$imputed[!as.logical(tmp$is_more_better)]
+    #this is a hack but it will do for now
+    tmp$value[!as.logical(tmp$is_more_better)] = -tmp$value[!as.logical(tmp$is_more_better)]
+    tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
+    return(tmp)
   }
-  tmp = index_data_pad(df)
-  #put in a regional average option
-  tmp = rbind(tmp, index_data_knn(tmp))
-  index_meta_data <- readxl::read_excel(index_meta_data_path)
-  tmp = tmp %>% dplyr::left_join(index_meta_data)
-  tmp$imputed[!as.logical(tmp$is_more_better)] = -tmp$imputed[!as.logical(tmp$is_more_better)]
-  #this is a hack but it will do for now
-  tmp$value[!as.logical(tmp$is_more_better)] = -tmp$value[!as.logical(tmp$is_more_better)]
-  tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
-  return(tmp)
+
 }

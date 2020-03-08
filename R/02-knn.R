@@ -12,7 +12,6 @@
 #' @keywords summarise
 #' @author David Hammond
 
-
 index_data_knn = function(df){
   x = df %>% dplyr::select(.data$geocode, .data$year, .data$variablename, .data$imputed) %>%
     tidyr::spread(.data$variablename, .data$imputed)
@@ -21,8 +20,10 @@ index_data_knn = function(df){
   tmp <- sweep(tmp, MARGIN = 2, preObj$std, `*`)
   tmp <- sweep(tmp, MARGIN = 2, preObj$mean, `+`)
   tmp <- cbind(geocode = x$geocode, year = x$year, tmp)
-  tmp <- tmp %>% tidyr::gather("variablename", "imputed", -c(.data$geocode, .data$year))
-  tmp <- tmp %>% dplyr::anti_join(df %>% dplyr::select(-.data$imputation_type)) %>% dplyr::mutate(imputation_type = "knn")
+  tmp <- tmp %>% tidyr::gather("variablename", "imputed", -c(.data$geocode, .data$year)) %>%
+    dplyr::mutate(geocode = as.character(.data$geocode))
+  tmp <- tmp %>% dplyr::anti_join(df %>% dplyr::select(-.data$imputation_type)) %>% dplyr::mutate(imputation_type = "knn") %>%
+    dplyr::mutate(value = NA) %>% dplyr::select(-.data$geocode, -.data$year, -.data$variablename, -.data$value, -.data$imputed, -.data$imputation_type)
   return(tmp)
 }
 

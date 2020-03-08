@@ -6,7 +6,7 @@
 \usage{
 index_data_preprocess(
   df,
-  index_meta_data_path = "index_meta_data/index_meta_data.xlsx"
+  index_meta_data_path = "index_meta_data/index_meta_data.csv"
 )
 }
 \arguments{

@@ -41,13 +41,17 @@
 #' @export
 index_create_meta = function(df){
   num_variablenames = length(unique(df$variablename))
-  tmp = df %>% dplyr::group_by(.data$variablename) %>% dplyr::summarise(num_geos = length(unique(.data$geocode)),
-                                                                        earliest = min(.data$year),
-                                                                        latest = max(.data$year),
-                                                                        index_name = "User to fill in",
-                                                                        index_domain = "User to fill in",
-                                                                        is_more_better = "User to fill in",
-                                                                        weight = "User to fill in") %>%
+  tmp = df %>% dplyr::mutate(value = round(.data$value, 2)) %>%
+    dplyr::group_by(.data$variablename) %>%
+    dplyr::summarise(num_geos = length(unique(.data$geocode)),
+                     earliest = min(.data$year),
+                     latest = max(.data$year),
+                     lowest_score = paste(paste(.data$geocode[.data$value == min(.data$value)], collapse = ","), min(.data$value)),
+                     highest_score = paste(paste(.data$geocode[.data$value == max(.data$value)], collapse = ","), max(.data$value)),
+                     index_name = "User to fill in",
+                     index_domain = "User to fill in",
+                     is_more_better = "User to fill in",
+                     weight = "User to fill in") %>%
     dplyr::ungroup()
   message(paste("Your data has:", num_variablenames, "variables"))
   message("Your index meta data file hase been written to ./index_meta_data/index_meta_data.xlsx. Please fill in this table before proceeding")

@@ -46,6 +46,11 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
                             y = "Number of Countries with less than knn threshold") +
                        ggplot2::theme_minimal())
     print(p)
+    dy_dx = diff(my_ecdf$number_of_countries)/diff(my_ecdf$knn_threshold)
+    pos = which(abs(dy_dx) == min(dy_dx))
+    message(paste("Recommend a knn threshold of",
+            my_ecdf$knn_threshold[pos+1], "for",
+            my_ecdf$number_of_countries[pos+1], "countries"))
     return(tmp)
   }
 

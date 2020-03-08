@@ -25,9 +25,9 @@ index_calculate = function(df){
     dplyr::mutate(banded = ifelse(.data$banded > 1, 1, .data$banded)) %>%
     dplyr::mutate(indicator_score = .data$banded*.data$weight) %>%
     dplyr::group_by(.data$geocode, .data$year, .data$index_domain) %>%
-    dplyr::mutate(domain_score = sum(.data$indicator_score)) %>%
+    dplyr::mutate(domain_score = sum(.data$indicator_score)/sum(.data$weight)) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(.data$geocode, .data$year, .data$index_name) %>%
-    dplyr::mutate(index_score = sum(.data$indicator_score))
+    dplyr::mutate(index_score = sum(.data$indicator_score)/sum(.data$weight))
   return(df)
 }

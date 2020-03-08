@@ -23,11 +23,12 @@ index_calculate = function(df){
     dplyr::mutate(banded = (.data$imputed - .data$lower_iqr)/(.data$upper_iqr - .data$lower_iqr)) %>%
     dplyr::mutate(banded = ifelse(.data$banded < 0, 0, .data$banded)) %>%
     dplyr::mutate(banded = ifelse(.data$banded > 1, 1, .data$banded)) %>%
-    dplyr::mutate(indicator_score = .data$banded*.data$weight) %>%
-    dplyr::group_by(.data$geocode, .data$year, .data$index_domain) %>%
-    dplyr::mutate(domain_score = sum(.data$indicator_score)/sum(.data$weight)) %>%
-    dplyr::ungroup() %>%
-    dplyr::group_by(.data$geocode, .data$year, .data$index_name) %>%
-    dplyr::mutate(index_score = sum(.data$indicator_score)/sum(.data$weight))
+    dplyr::mutate(indicator_score = .data$banded*.data$weight)
+  domains = df %>% dplyr::group_by(.data$geocode, .data$year, .data$index_domain) %>%
+    dplyr::mutate(value = sum(.data$indicator_score)/sum(.data$weight)) %>% dplyr::rename(variablename = .data$index_domain)
+  scores = df %>% dplyr::group_by(.data$geocode, .data$year, .data$index_name) %>%
+    dplyr::mutate(value = sum(.data$indicator_score)/sum(.data$weight)) %>% dplyr::rename(variablename = .data$index_name)
+  scores = rbind(scores, domains)
+  df = list(backend = df, scores = scores)
   return(df)
 }

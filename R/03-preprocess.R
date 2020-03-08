@@ -31,8 +31,9 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
     #this is a hack but it will do for now
     tmp$value[!as.logical(tmp$is_more_better)] = -tmp$value[!as.logical(tmp$is_more_better)]
     tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
-    tmp = tmp %>% group_by(geocode) %>% mutate(knn_pc = sum(imputation_type == "knn")/n()) %>%
-      ungroup()
+    tmp = tmp %>% dplyr::group_by(.data$geocode) %>%
+      dplyr::mutate(knn_pc = sum(.data$imputation_type == "knn")/dplyr::n()) %>%
+      dplyr::ungroup()
     my_ecdf = stats::ecdf(tmp$knn_pc)
     my_ecdf <- data.frame(
       knn_threshold = tmp$knn_pc,
@@ -40,10 +41,11 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
     )
     my_ecdf  = my_ecdf [order(my_ecdf$knn_threshold),]
     my_ecdf = my_ecdf %>% dplyr::distinct()
-    plotly::ggplotly(ggplot2::ggplot(my_ecdf , ggplot2::aes(.data$knn_threshold, .data$number_of_countries)) + ggplot2::geom_line() +
+    p = plotly::ggplotly(ggplot2::ggplot(my_ecdf , ggplot2::aes(.data$knn_threshold, .data$number_of_countries)) + ggplot2::geom_line() +
                        ggplot2::labs(title = "Number of knn imputations vs number of countries in index", x = "knn Threshold",
                             y = "Number of Countries with less than knn threshold") +
                        ggplot2::theme_minimal())
+    print(p)
     return(tmp)
   }
 

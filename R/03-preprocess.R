@@ -31,6 +31,8 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
     #this is a hack but it will do for now
     tmp$value[!as.logical(tmp$is_more_better)] = -tmp$value[!as.logical(tmp$is_more_better)]
     tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
+    tmp = tmp %>% group_by(geocode) %>% mutate(knn_pc = sum(imputation_type == "knn")/n()) %>%
+      ungroup()
     my_ecdf = stats::ecdf(tmp$knn_pc)
     my_ecdf <- data.frame(
       knn_threshold = tmp$knn_pc,

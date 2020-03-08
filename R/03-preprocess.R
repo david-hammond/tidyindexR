@@ -25,7 +25,7 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
   }else{
     tmp = index_data_pad(df)
     #put in a regional average option
-    tmp = rbind(tmp, index_data_knn(tmp))
+    tmp = index_data_knn(tmp)
     tmp = tmp %>% dplyr::left_join(index_meta_data)
     tmp$imputed[!as.logical(tmp$is_more_better)] = -tmp$imputed[!as.logical(tmp$is_more_better)]
     #this is a hack but it will do for now

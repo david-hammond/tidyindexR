@@ -23,7 +23,8 @@ index_data_knn = function(df){
   tmp <- tmp %>% tidyr::gather("variablename", "imputed", -c(.data$geocode, .data$year)) %>%
     dplyr::mutate(geocode = as.character(.data$geocode))
   tmp <- tmp %>% dplyr::anti_join(df %>% dplyr::select(-.data$imputation_type)) %>% dplyr::mutate(imputation_type = "knn") %>%
-    dplyr::mutate(value = NA) %>% dplyr::select(-.data$geocode, -.data$year, -.data$variablename, -.data$value, -.data$imputed, -.data$imputation_type)
+    dplyr::mutate(value = NA)
+  tmp = rbind(df, tmp[,names(df)])
   return(tmp)
 }
 

@@ -27,10 +27,28 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
     #put in a regional average option
     tmp = index_data_knn(tmp)
     tmp = tmp %>% dplyr::left_join(index_meta_data)
-    tmp$imputed[!as.logical(tmp$is_more_better)] = -tmp$imputed[!as.logical(tmp$is_more_better)]
-    #this is a hack but it will do for now
-    tmp$value[!as.logical(tmp$is_more_better)] = -tmp$value[!as.logical(tmp$is_more_better)]
     tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
+
+    #set banding limits
+
+    tmp$lower_cutoff_band = tmp$min_value
+    tmp$upper_cutoff_band = tmp$max_value
+    pos = tmp$banding_using_minmax == 0
+    tmp$lower_cutoff_band = tmp$lower_iqr
+    tmp$upper_cutoff_band = tmp$upper_iqr
+
+    #Switch polarity
+
+    pos = !as.logical(tmp$is_more_better)
+
+    tmp$imputed[pos] = -tmp$imputed[pos]
+    tmp$value[pos] = -tmp$value[pos]
+    low = tmp$lower_cutoff_band[pos]
+    high = tmp$upper_cutoff_band[pos]
+    tmp$lower_cutoff_band[pos] = - high
+    tmp$upper_cutoff_band[pos] = - low
+
+
     tmp = tmp %>% dplyr::group_by(.data$geocode) %>%
       dplyr::mutate(knn_pc = sum(.data$imputation_type == "knn")/dplyr::n()) %>%
       dplyr::ungroup()

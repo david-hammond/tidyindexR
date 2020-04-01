@@ -14,7 +14,7 @@
 #' @export
 index_data_knn = function(df){
   x = df %>% dplyr::select(.data$geocode, .data$year, .data$variablename, .data$imputed) %>%
-    tidyr::spread(.data$variablename, .data$imputed)
+    tidyr::spread(.data$variablename, .data$imputed) %>% as.data.frame()
   preObj <- caret::preProcess(x[, -c(1, 2)], method = "knnImpute", k = 5)
   tmp <- stats::predict(preObj, x[, -c(1, 2)])
   tmp <- sweep(tmp, MARGIN = 2, preObj$std, `*`)

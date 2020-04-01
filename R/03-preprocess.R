@@ -34,8 +34,8 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
     tmp$lower_cutoff_band = tmp$min_value
     tmp$upper_cutoff_band = tmp$max_value
     pos = tmp$banding_using_minmax == 0
-    tmp$lower_cutoff_band = tmp$lower_iqr
-    tmp$upper_cutoff_band = tmp$upper_iqr
+    tmp$lower_cutoff_band[pos] = tmp$lower_iqr[pos]
+    tmp$upper_cutoff_band[pos] = tmp$upper_iqr[pos]
 
     #Switch polarity
 

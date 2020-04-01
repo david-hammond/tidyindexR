@@ -11,7 +11,7 @@
 #' @importFrom rlang .data
 #' @keywords summarise
 #' @author David Hammond
-#'  @export
+#' @export
 
 index_data_knn = function(df){
   x = df %>% dplyr::select(.data$geocode, .data$year, .data$variablename, .data$imputed) %>%

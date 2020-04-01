@@ -11,8 +11,7 @@
 #' @importFrom rlang .data
 #' @keywords summarise
 #' @author David Hammond
-
-
+#' @export
 index_data_pad = function(df){
   df = df %>% dplyr::mutate(date = as.Date(paste0(.data$year, "-01-01"), format("%Y-%m-%d")))
   df = df %>%

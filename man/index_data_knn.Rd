@@ -17,5 +17,6 @@ This analyses raw index data and summarises the data
 }
 \author{
 David Hammond
+ @export
 }
 \keyword{summarise}

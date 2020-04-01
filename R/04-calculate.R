@@ -20,7 +20,7 @@
 #' @export
 index_calculate = function(df){
   df = df %>%
-    dplyr::mutate(banded = (.data$imputed - .data$lower_iqr)/(.data$upper_iqr - .data$lower_iqr)) %>%
+    dplyr::mutate(banded = (.data$imputed - .data$lower_cutoff_band)/(.data$upper_cutoff_band- .data$lower_cutoff_band)) %>%
     dplyr::mutate(banded = ifelse(.data$banded < 0, 0, .data$banded)) %>%
     dplyr::mutate(banded = ifelse(.data$banded > 1, 1, .data$banded)) %>%
     dplyr::mutate(indicator_score = .data$banded*.data$weight)

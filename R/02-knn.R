@@ -12,7 +12,6 @@
 #' @keywords summarise
 #' @author David Hammond
 #' @export
-
 index_data_knn = function(df){
   x = df %>% dplyr::select(.data$geocode, .data$year, .data$variablename, .data$imputed) %>%
     tidyr::spread(.data$variablename, .data$imputed)

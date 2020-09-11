@@ -35,7 +35,7 @@ index_calculate = function(df){
     dplyr::mutate(rank = rank(-.data$value, ties.method = "min"), value = round(.data$value,4)) %>%
     dplyr::ungroup()
   countryinfo = wbstats::wb_cachelist$countries %>% dplyr::rename(geocode = .data$iso3c) %>%
-    dplyr::select(.data$geocode, .data$country,.data$region, .data$income)
+    dplyr::select(.data$geocode, .data$country,.data$region, .data$income_level)
   df = list(backend = df, scores = scores, countryinfo = countryinfo)
   return(df)
 }

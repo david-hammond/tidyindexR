@@ -6,6 +6,9 @@
 #'
 #' @return Returns a summary of the raw data.
 #'
+#' @examples
+#' data(povstats)
+#' index_data_pad(povstats)
 #'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data

@@ -56,7 +56,7 @@ index_create_meta = function(df){
     dplyr::ungroup()
   message(paste("Your data has:", num_variablenames, "variables"))
   message("Your index meta data file hase been written to ./index_meta_data/index_meta_data.xlsx. Please fill in this table before proceeding")
-  #.output_meta(tmp)
+  .output_meta(tmp)
   return(tmp)
 }
 

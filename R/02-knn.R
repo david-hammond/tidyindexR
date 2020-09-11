@@ -6,6 +6,9 @@
 #'
 #' @return Returns a summary of the raw data.
 #'
+#' @examples
+#' data(povstats)
+#' index_create_meta(povstats)
 #'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
@@ -22,7 +25,7 @@ index_data_knn = function(df){
   tmp <- cbind(geocode = x$geocode, year = x$year, tmp)
   tmp <- tmp %>% tidyr::gather("variablename", "imputed", -c(.data$geocode, .data$year)) %>%
     dplyr::mutate(geocode = as.character(.data$geocode))
-  tmp <- tmp %>% dplyr::anti_join(df %>% dplyr::select(-.data$imputation_type)) %>% dplyr::mutate(imputation_type = "knn") %>%
+  tmp <- tmp %>% dplyr::anti_join(df %>% select(geocode, year, variablename)) %>% dplyr::mutate(imputation_type = "knn") %>%
     dplyr::mutate(value = NA)
   tmp = rbind(df, tmp[,names(df)])
   return(tmp)

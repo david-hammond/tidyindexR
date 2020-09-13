@@ -44,9 +44,15 @@ outliers <- function(x) {
 
 index_data_summarise = function(df){
   df = df %>% dplyr::group_by(.data$variablename) %>%
-    dplyr::summarise(min_value =  min(.data$value, na.rm = T),
+    dplyr::summarise(num_geos = length(unique(.data$geocode)),
+                     earliest = min(.data$year),
+                     latest = max(.data$year),
+                     lowest_score = paste(paste(unique(.data$geocode[.data$value == min(.data$value)])[1], collapse = ","), min(.data$value)),
+                     highest_score = paste(paste(unique(.data$geocode[.data$value == max(.data$value)][1]), collapse = ","), max(.data$value)),
+                     min_value =  min(.data$value, na.rm = T),
                      max_value = max(.data$value, na.rm = T),
                      lower_iqr = outliers(.data$value)[1],
                      upper_iqr = outliers(.data$value)[2]) %>% dplyr::ungroup()
+
   return(df)
 }

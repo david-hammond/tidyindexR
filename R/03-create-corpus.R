@@ -21,7 +21,7 @@ index_create_data_corpus = function(df){
     tmp = index_data_pad(df)
     #put in a regional average option
     tmp = index_data_knn(tmp)
-    tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
+    #tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
 
     # tmp = tmp %>% dplyr::group_by(.data$geocode) %>%
     #   dplyr::mutate(knn_pc = sum(.data$imputation_type == "knn")/dplyr::n()) %>%

@@ -23,9 +23,9 @@ index_create_data_corpus = function(df){
     tmp = index_data_knn(tmp)
     tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
 
-    tmp = tmp %>% dplyr::group_by(.data$geocode) %>%
-      dplyr::mutate(knn_pc = sum(.data$imputation_type == "knn")/dplyr::n()) %>%
-      dplyr::ungroup()
+    # tmp = tmp %>% dplyr::group_by(.data$geocode) %>%
+    #   dplyr::mutate(knn_pc = sum(.data$imputation_type == "knn")/dplyr::n()) %>%
+    #   dplyr::ungroup()
     # my_ecdf = stats::ecdf(tmp$knn_pc)
     # my_ecdf <- data.frame(
     #   knn_threshold = tmp$knn_pc,

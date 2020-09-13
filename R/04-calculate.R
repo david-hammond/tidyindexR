@@ -24,13 +24,9 @@ index_calculate = function(df){
     dplyr::mutate(banded = ifelse(.data$banded < 0, 0, .data$banded)) %>%
     dplyr::mutate(banded = ifelse(.data$banded > 1, 1, .data$banded)) %>%
     dplyr::mutate(indicator_score = .data$banded*.data$weight)
-  domains = df %>% dplyr::group_by(.data$geocode, .data$year, .data$index_domain) %>%
-    dplyr::summarise(value = sum(.data$indicator_score)/sum(.data$weight)) %>%
-    dplyr::rename(variablename = .data$index_domain) %>% dplyr::ungroup()
   scores = df %>% dplyr::group_by(.data$geocode, .data$year, .data$index_name) %>%
     dplyr::summarise(value = sum(.data$indicator_score)/sum(.data$weight)) %>%
     dplyr::rename(variablename = .data$index_name) %>% dplyr::ungroup()
-  scores = rbind(scores, domains)
   scores = scores %>% dplyr::group_by(.data$variablename, .data$year) %>%
     dplyr::mutate(rank = rank(-.data$value, ties.method = "min"), value = round(.data$value,4)) %>%
     dplyr::ungroup()

@@ -49,7 +49,6 @@ index_create_meta = function(df){
                      lowest_score = paste(paste(unique(.data$geocode[.data$value == min(.data$value)])[1], collapse = ","), min(.data$value)),
                      highest_score = paste(paste(unique(.data$geocode[.data$value == max(.data$value)][1]), collapse = ","), max(.data$value)),
                      index_name = "User to fill in",
-                     index_domain = "User to fill in",
                      is_more_better = "User to fill in",
                      weight = "User to fill in",
                      banding_using_minmax = "User to fill in") %>%

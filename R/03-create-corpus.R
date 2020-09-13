@@ -17,37 +17,11 @@
 #' @keywords summarise
 #' @author David Hammond
 #' @export
-index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/index_meta_data.csv"){
-  index_meta_data <- readr::read_csv(index_meta_data_path)
-  if(sum(is.na(index_meta_data))+sum(grepl("User", index_meta_data))>0){
-    message(paste("Malformed index_meta_data file at", index_meta_data_path))
-    message("Please ensure all columns and cells are filled in")
-  }else{
+index_create_data_corpus = function(df){
     tmp = index_data_pad(df)
     #put in a regional average option
     tmp = index_data_knn(tmp)
-    tmp = tmp %>% dplyr::left_join(index_meta_data)
     tmp = tmp %>% dplyr::left_join(index_data_summarise(tmp))
-
-    #set banding limits
-
-    tmp$lower_cutoff_band = tmp$min_value
-    tmp$upper_cutoff_band = tmp$max_value
-    pos = tmp$banding_using_minmax == 0
-    tmp$lower_cutoff_band[pos] = tmp$lower_iqr[pos]
-    tmp$upper_cutoff_band[pos] = tmp$upper_iqr[pos]
-
-    #Switch polarity
-
-    pos = !as.logical(tmp$is_more_better)
-
-    tmp$imputed[pos] = -tmp$imputed[pos]
-    tmp$value[pos] = -tmp$value[pos]
-    low = tmp$lower_cutoff_band[pos]
-    high = tmp$upper_cutoff_band[pos]
-    tmp$lower_cutoff_band[pos] = - high
-    tmp$upper_cutoff_band[pos] = - low
-
 
     tmp = tmp %>% dplyr::group_by(.data$geocode) %>%
       dplyr::mutate(knn_pc = sum(.data$imputation_type == "knn")/dplyr::n()) %>%
@@ -65,6 +39,4 @@ index_data_preprocess = function(df, index_meta_data_path = "index_meta_data/ind
                        ggplot2::theme_minimal())
     print(p)
     return(tmp)
-  }
-
 }

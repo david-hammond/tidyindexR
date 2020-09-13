@@ -15,6 +15,11 @@ Returns a summary of the raw data.
 \description{
 This analyses raw index data and summarises the data
 }
+\examples{
+data(povstats)
+index_data_pad(povstats)
+
+}
 \author{
 David Hammond
 }

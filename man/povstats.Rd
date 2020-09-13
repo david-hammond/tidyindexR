@@ -4,7 +4,9 @@
 \name{povstats}
 \alias{povstats}
 \title{povstats}
-\format{An object of class \code{data.frame} with 10255 rows and 4 columns.}
+\format{
+An object of class \code{data.frame} with 10255 rows and 4 columns.
+}
 \usage{
 povstats
 }

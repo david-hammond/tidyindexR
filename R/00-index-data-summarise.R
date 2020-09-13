@@ -1,64 +1,3 @@
-#' Write meta data file for user to modify
-#'
-#' This analyses raw index data and summarises the data
-#'
-#' @param df dataframe in tidyindexR format
-#'
-#' @return Returns a summary of the raw data.
-#'
-#' @examples
-#' data(povstats)
-#' index_create_meta(povstats)
-#'
-#' @importFrom dplyr %>%
-#' @importFrom rlang .data
-#' @keywords summarise
-#' @author David Hammond
-.output_meta = function(df){
-  if(!dir.exists("./index_meta_data")){
-    dir.create("./index_meta_data")
-  }
-  rio::export(df, file = "./index_meta_data/index_meta_data.xlsx")
-}
-
-#' Create meta data table for user input
-#'
-#' This analyses raw index data and summarises the data
-#'
-#' @param df dataframe in tidyindexR format
-#'
-#' @return Returns a summary of the raw data.
-#'
-#' @examples
-#'
-#' #data(povstats)
-#' #index_create_meta(povstats)
-#'
-#' @importFrom dplyr %>%
-#' @importFrom rlang .data
-#' @keywords summarise
-#' @author David Hammond
-#' @export
-index_create_meta = function(df){
-  num_variablenames = length(unique(df$variablename))
-  tmp = df %>% dplyr::mutate(value = round(.data$value, 2)) %>%
-    dplyr::group_by(.data$variablename) %>%
-    dplyr::summarise(num_geos = length(unique(.data$geocode)),
-                     earliest = min(.data$year),
-                     latest = max(.data$year),
-                     lowest_score = paste(paste(unique(.data$geocode[.data$value == min(.data$value)])[1], collapse = ","), min(.data$value)),
-                     highest_score = paste(paste(unique(.data$geocode[.data$value == max(.data$value)][1]), collapse = ","), max(.data$value)),
-                     index_name = "User to fill in",
-                     is_more_better = "User to fill in",
-                     weight = "User to fill in",
-                     banding_using_minmax = "User to fill in") %>%
-    dplyr::ungroup()
-  message(paste("Your data has:", num_variablenames, "variables"))
-  message("Your index meta data file hase been written to ./index_meta_data/index_meta_data.xlsx. Please fill in this table before proceeding")
-  .output_meta(tmp)
-  return(tmp)
-}
-
 #' Calculate IQR for outliers
 #'
 #' This calculates IQR range for indicators
@@ -100,6 +39,7 @@ outliers <- function(x) {
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @keywords summarise
+#' @export
 #' @author David Hammond
 
 index_data_summarise = function(df){

@@ -12,8 +12,8 @@
 #'
 #' @author David Hammond
 #' @export
-index_data_band = function(values, worst_value = min(values), best_value = max(values)){
-  hist(values)
+index_data_band = function(values, worst_value = min(values), best_value = max(values), main = ""){
+  hist(values, main = main)
   abline(v = worst_value, col = "red", cex = 2)
   abline(v = best_value, col = "green", cex = 2)
   text(x = best_value, y = 0.1, "BEST", col = "green")
